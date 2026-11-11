@@ -1,0 +1,63 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Metalshop{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'albume/css/nav.css' %}">
+</head>
+<body>
+
+    <header>
+    <h1>Metalshop</h1>
+    <p>Magazin online de albume metal</p>
+
+    <nav>
+        {% url "index" as acasa %}
+
+        <ul>
+            <li>
+                <a href="{% url 'index' %}">Acasă</a>
+
+                <ul>
+                    <li><a href="{{ acasa }}#prezentare">Prezentare</a></li>
+                    <li><a href="{{ acasa }}#categorii">Categorii muzicale</a></li>
+                    <li><a href="{{ acasa }}#recomandari">Albume recomandate</a></li>
+                    <li><a href="{{ acasa }}#noutati">Noutăți</a></li>
+                    <li><a href="{{ acasa }}#promotii">Promoții</a></li>
+                </ul>
+            </li>
+
+            <li><a href="{% url 'despre' %}">Despre</a></li>
+            <li><a href="{% url 'istoric' %}">Istoric</a></li>
+            <li><a href="{% url 'produse' %}">Produse</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+            <li><a href="{% url 'cos_virtual' %}">Coș virtual</a></li>
+            <li><a href="{% url 'info' %}">Info</a></li>
+            <li><a href="{% url 'log' %}">Log</a></li>
+        </ul>
+    </nav>
+</header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+    <p>{{ copyright }}</p>
+
+    <p>Nume firmă: {{ firma.nume }}</p>
+    <p>An înființare: {{ firma.an_infiintare }}</p>
+    <p>Telefon: {{ firma.telefon }}</p>
+    <p>Sediu: {{ firma.sediu }}</p>
+    <p>Domeniu: {{ firma.domeniu }}</p>
+    <p>Genuri muzicale: {{ firma.genuri }}</p>
+
+    <p>IP vizitator: {{ request.ip_client }}</p>
+    </footer>
+
+</body>
+</html>

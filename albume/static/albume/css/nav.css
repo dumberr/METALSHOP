@@ -1,0 +1,82 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #181818;
+    color: white;
+}
+
+header {
+    background-color: #292929;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Meniul principal */
+nav > ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav li {
+    position: relative;
+    list-style: none;
+}
+
+nav a {
+    display: block;
+    padding: 15px 20px;
+    color: white;
+    text-decoration: none;
+    background-color: #333;
+}
+
+nav a:hover {
+    background-color: #8b0000;
+}
+
+/* Submeniul este ascuns initial */
+nav li ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    padding: 0;
+    min-width: 180px;
+    z-index: 1;
+}
+
+/* Submeniul apare cand trecem cu mouse-ul peste element */
+nav li:hover > ul,
+nav li:focus-within > ul {
+    display: block;
+}
+
+main {
+    max-width: 1000px;
+    margin: auto;
+    padding: 30px;
+}
+
+section {
+    margin-bottom: 30px;
+}
+
+footer {
+    background-color: #292929;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Adaptarea meniului pentru ecrane mici */
+@media (max-width: 600px) {
+    nav > ul {
+        flex-direction: column;
+    }
+
+    nav li ul {
+        position: static;
+    }
+}

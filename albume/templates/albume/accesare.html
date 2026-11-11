@@ -1,0 +1,13 @@
+{% extends "albume/baza.html" %}
+
+{% block title %}Detalii accesare - Metalshop{% endblock %}
+
+{% block content %}
+    <h1>Detalii accesare {{ id }}</h1>
+
+    {% if accesare %}
+        <pre>{{ accesare }}</pre>
+    {% else %}
+        <p>Nu există o accesare cu ID-ul {{ id }}.</p>
+    {% endif %}
+{% endblock %}

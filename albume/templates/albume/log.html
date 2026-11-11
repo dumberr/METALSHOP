@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+{% extends "albume/baza.html" %}
+
+{% block title %}Log accesări - Metalshop{% endblock %}
+
+{% block content %}
+    <h1>Log accesări</h1>
+
+{% if afis_tabel %}
+    <table border="1">
+        <tr>
+            {% for coloana in coloane %}
+                <th>{{ coloana }}</th>
+            {% endfor %}
+        </tr>
+
+        {% for rand in randuri %}
+            <tr>
+                {% for valoare in rand %}
+                    <td>{{ valoare }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <ul>
+        {% for accesare in accesari %}
+            <li>
+                <pre>{{ accesare }}</pre>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<section>
+    <h2>Statistici accesări</h2>
+
+    <p>
+        Cea mai accesată pagină:
+        {{ pagina_max }} - {{ max_accesari }} accesări
+    </p>
+
+    <p>
+        Cea mai puțin accesată pagină:
+        {{ pagina_min }} - {{ min_accesari }} accesări
+    </p>
+</section>
+
+    {% if afis_nr %}
+        <section>
+            <h2>Numărul de accesări</h2>
+            <p>{{ nr_accesari }}</p>
+        </section>
+    {% endif %}
+
+    {% if eroare %}
+        <p>{{ eroare }}</p>
+    {% endif %}
+
+    {% if afis_detalii %}
+    <section>
+        <h2>Detalii accesări</h2>
+
+        <ul>
+            {% for accesare in accesari %}
+                <li>{{ accesare.data|date:"d F Y, H:i:s" }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+{% endif %}
+
+<section>
+    <h2>Parametri</h2>
+
+    <p>Număr parametri: {{ nr_parametri }}</p>
+
+    <ul>
+        {% for nume in nume_parametri %}
+            <li>{{ nume }}</li>
+        {% endfor %}
+    </ul>
+</section>
+
+{% endblock %}
+</html>

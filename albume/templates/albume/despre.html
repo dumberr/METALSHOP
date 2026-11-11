@@ -1,0 +1,32 @@
+{% extends "albume/baza.html" %}
+
+{% load static %}
+
+
+{% block title %}Despre - Metalshop{% endblock %}
+
+{% block content %}
+    <h1>Despre Metalshop</h1>
+
+    <section>
+        <h2>Cine suntem</h2>
+
+        <img src="{% static 'albume/images/despre.png' %}"
+        alt="Despre Metalshop"
+        width="400">
+        <p>
+            Metalshop este un magazin online specializat în
+            comercializarea albumelor muzicale din genul metal
+            și subgenurile acestuia.
+        </p>
+    </section>
+
+    <section>
+        <h2>Misiunea noastră</h2>
+        <p>
+            Ne propunem să oferim pasionaților de metal
+            o selecție variată de albume, de la formații
+            consacrate până la artiști mai puțin cunoscuți.
+        </p>
+    </section>
+{% endblock %}

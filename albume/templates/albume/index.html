@@ -1,0 +1,56 @@
+{% extends "albume/baza.html" %}
+
+{% load static %}
+
+
+{% block title %}Acasă - Metalshop{% endblock %}
+
+{% block content %}
+
+    <section id="prezentare">
+        <h2>Bine ai venit la Metalshop!</h2>
+
+        <img src="{% static 'albume/images/metalshop.webp' %}"
+        alt="Magazinul Metalshop"
+        width="400">
+
+        <p>
+            Metalshop este un magazin online specializat in
+            comercializarea albumelor muzicale din genul metal
+            si subgenurile acestuia.
+        </p>
+    </section>
+
+    <section id="categorii">
+        <h2>Categorii muzicale</h2>
+        <p>
+            Descoperă albume heavy metal, thrash metal,
+            death metal și black metal.
+        </p>
+    </section>
+
+    <section id="recomandari">
+        <h2>Albume recomandate</h2>
+        <p>
+            Aici vor fi prezentate albumele recomandate
+            de magazin.
+        </p>
+    </section>
+
+    <section id="noutati">
+        <h2>Noutăți și lansări</h2>
+        <p>
+            Aici vei găsi informații despre albumele
+            recent lansate.
+        </p>
+    </section>
+
+    <section id="promotii">
+        <h2>Promoții</h2>
+        <p>
+            Consultă această secțiune pentru ofertele
+            și reducerile magazinului.
+        </p>
+    </section>
+
+{% endblock %}
