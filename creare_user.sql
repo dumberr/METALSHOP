@@ -1,4 +1,4 @@
-//CREATE USER metalshop_user WITH ENCRYPTED PASSWORD "Rares@Vladut";
+//CREATE USER metalshop_user WITH ENCRYPTED PASSWORD "parola";
 
 //GRANT ALL ON DATABASE metalshop_db TO metalshop_user;
 
