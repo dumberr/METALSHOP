@@ -1,0 +1,66 @@
+{% extends "admin/base.html" %}
+
+{% load static %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title }}{% endblock %}
+
+{% block branding %}
+<img src="{% static 'albume/images/metalshop.webp' %}" alt="Sigla Metalshop" height="40">
+<div id="site-name"><a href="{% url 'admin:index' %}">{{ site_header }}</a></div>
+{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+    :root,
+    html[data-theme="light"],
+    html[data-theme="dark"] {
+        --primary: #8b0000;
+        --secondary: #292929;           /* background-ul antetului (meniul de sus) */
+        --primary-fg: #ffffff;
+        --body-bg: #181818;             /* background-ul paginii */
+        --breadcrumbs-bg: #8b0000;      /* background-ul meniului breadcrumbs */
+        --selected-row: #4a1620;        /* randul selectat */
+
+        /* culorile textului, ca sa se vada pe fundalul inchis */
+        --body-fg: #eeeeee;
+        --body-quiet-color: #c8c8c8;
+        --body-medium-color: #dddddd;
+        --body-loud-color: #ffffff;
+        --link-fg: #d0d0d0;
+        --link-hover-color: #ff8a8a;
+        --link-selected-fg: #a9bdd0;
+        --breadcrumbs-fg: #f0d0d0;
+        --breadcrumbs-link-fg: #ffffff;
+
+        /* restul fundalurilor si liniilor, in ton cu pagina */
+        --darkened-bg: #242424;
+        --selected-bg: #2e2e2e;
+        --hairline-color: #333333;
+        --border-color: #444444;
+        --button-bg: #5c0000;
+        --button-hover-bg: #a41515;
+        --default-button-bg: #8b0000;
+        --default-button-hover-bg: #a41515;
+        --close-button-bg: #333333;
+        --close-button-hover-bg: #666666;
+        --message-info-bg: #265895;
+        --message-success-bg: #006b1b;
+        --message-warning-bg: #583305;
+        --message-error-bg: #570808;
+        --error-fg: #e35f5f;
+    }
+
+    /* background-ul meniului lateral */
+    #nav-sidebar {
+        background-color: #2a1418;
+    }
+
+    /* sigla si titlul pe acelasi rand */
+    #branding {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+</style>
+{% endblock %}

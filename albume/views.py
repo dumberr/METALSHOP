@@ -9,6 +9,8 @@ from django.shortcuts import render
 
 from django.contrib import messages
 
+from django.core.mail import send_mail
+
 
 # 4
 class Accesare:
@@ -91,6 +93,7 @@ class Accesare:
 lista_accesari = []
 
 def index(request):
+    trimite_email() 
     accesare = Accesare(
         #request.META.get("REMOTE_ADDR"),
         #8
@@ -102,6 +105,8 @@ def index(request):
     lista_accesari.append(accesare)
     
     print(accesare)
+    
+    
 
     
 
@@ -393,3 +398,12 @@ def in_lucru(request):
     return render(request, "albume/in_lucru.html")
 
 
+def trimite_email():
+    send_mail(
+        subject='Salutare!',
+        message='Salut. Ce mai faci?',
+        html_message='<h1>Salut</h1><p>Ce mai faci?</p>',
+        from_email='djangorares@gmail.com',
+        recipient_list=['djangorares@gmail.com'],
+        fail_silently=False,
+    )
