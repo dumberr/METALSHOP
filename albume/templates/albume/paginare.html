@@ -1,0 +1,12 @@
+{# 6: linkurile pastreaza parametrii de sortare si tagurile active #}
+<p class="paginare">
+    {% if pagina.has_previous %}
+        <a href="?{{ param_toti }}pagina={{ pagina.previous_page_number }}">« Anterior</a>
+    {% endif %}
+
+    <span>Pagina {{ pagina.number }} din {{ pagina.paginator.num_pages }}</span>
+
+    {% if pagina.has_next %}
+        <a href="?{{ param_toti }}pagina={{ pagina.next_page_number }}">Următor »</a>
+    {% endif %}
+</p>

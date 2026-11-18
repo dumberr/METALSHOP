@@ -13,7 +13,11 @@ urlpatterns = [
     re_path(r"^accesare(?P<id>[0-9]+)/$", views.detalii_accesare, name="detalii_accesare"),
     
     
-    path("produse/", views.in_lucru, name="produse"),
+        #lab4 querysets
+    path("produse/", views.produse, name="produse"),
+    path("produse/<int:id>/", views.detalii_album, name="detalii_album"),
+    path("categorii/<str:nume>/", views.categorie, name="categorie"),
+
     path("contact/", views.in_lucru, name="contact"),
     path("cos_virtual/", views.in_lucru, name="cos_virtual"),
 ]

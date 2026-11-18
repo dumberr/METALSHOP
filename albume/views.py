@@ -11,6 +11,13 @@ from django.contrib import messages
 
 from django.core.mail import send_mail
 
+#lab4 querysets
+from urllib.parse import urlencode
+
+from django.conf import settings
+
+from .models import Album, Colectie
+
 
 # 4
 class Accesare:
@@ -407,3 +414,176 @@ def trimite_email():
         recipient_list=['djangorares@gmail.com'],
         fail_silently=False,
     )
+    
+
+#lab4
+
+COLOANE_SORTARE = {
+    "nume_album": "Nume",
+    "pret": "Preț",
+    "an_lansare": "An lansare",
+    "stoc": "Stoc"
+}
+
+def construieste_parametri(sort, coloana, taguri):  
+    perechi = []
+
+    if sort:
+        perechi.append(("sort", sort))
+        perechi.append(("coloana", coloana))
+
+    for tag in taguri:
+        perechi.append(("tag", tag))
+
+    sir = urlencode(perechi)
+
+    if sir:
+        sir += "&"
+
+    return sir
+
+
+# functie comuna pentru pagina
+def afiseaza_albume(request, albume, categorie=None):
+    eroare = ""
+
+    albume = albume.select_related("trupa").prefetch_related("colectii")
+
+    #3
+    sort = request.GET.get("sort")
+    coloana = request.GET.get("coloana", "nume_album")
+
+    if sort is not None:
+        if sort in ["a", "d"] and coloana in COLOANE_SORTARE:
+            if sort == "a":
+                albume = albume.order_by(coloana, "id_album")
+            else:
+                albume = albume.order_by("-" + coloana, "id_album")
+        else:
+            eroare = "Eroare: parametrii de sortare nu sunt valizi."
+            sort = None
+
+    #4
+    taguri_active = []
+
+    for tag in request.GET.getlist("tag"):
+        if tag not in taguri_active:
+            taguri_active.append(tag)
+
+    for tag in taguri_active:
+        albume = albume.filter(taguri__contains=[tag])
+
+    #5
+    butoane_taguri = []
+
+    for tag in taguri_active:
+        taguri_ramase = []
+
+        for t in taguri_active:
+            if t != tag:
+                taguri_ramase.append(t)
+
+        butoane_taguri.append({
+            "nume": tag,
+            "link_eliminare": "?" + construieste_parametri(sort, coloana, taguri_ramase).rstrip("&")
+        })
+
+    #6 paginare (pe albumele deja sortate si filtrate)
+    paginator = Paginator(albume, settings.PROD_PER_PAG)
+    nr_pagina = request.GET.get("pagina", 1)
+
+    try:
+        pagina = paginator.page(nr_pagina)
+    except PageNotAnInteger:
+        eroare = "Eroare: parametrul pagina trebuie sa fie un numar intreg."
+        pagina = paginator.page(1)
+    except EmptyPage:
+        eroare = "Pagina ceruta nu exista. Se afiseaza ultima pagina."
+        pagina = paginator.page(paginator.num_pages)
+
+    return render(request, "albume/produse.html", {
+        "pagina": pagina,
+        "categorie": categorie,
+        "eroare": eroare,
+
+        #3
+        "sort": sort,
+        "coloana": coloana,
+        "coloane_sortare": COLOANE_SORTARE,
+
+        #4, 5
+        "taguri_active": taguri_active,
+        "butoane_taguri": butoane_taguri,
+
+        #6 parametrii care trebuie pastrati in linkuri
+        "param_toti": construieste_parametri(sort, coloana, taguri_active),
+        "param_taguri": construieste_parametri(None, None, taguri_active),
+
+        "stoc_min": settings.STOC_MIN
+    })
+
+
+#1
+def produse(request):
+    accesare = Accesare(
+        request.ip_client,
+        request.build_absolute_uri(),
+        request.GET
+    )
+
+    lista_accesari.append(accesare)
+    print(accesare)
+
+    return afiseaza_albume(request, Album.objects.all())
+
+
+#7
+def categorie(request, nume):
+    accesare = Accesare(
+        request.ip_client,
+        request.build_absolute_uri(),
+        request.GET
+    )
+
+    lista_accesari.append(accesare)
+    print(accesare)
+
+    try:
+        colectie = Colectie.objects.get(nume=nume)
+    except Colectie.DoesNotExist:
+        return render(request, "albume/eroare.html", {
+            "mesaj": f"Categoria {nume} nu exista."
+        }, status=404)
+
+    return afiseaza_albume(request, colectie.albume.all(), colectie)
+
+
+#2
+def detalii_album(request, id):
+    accesare = Accesare(
+        request.ip_client,
+        request.build_absolute_uri(),
+        request.GET
+    )
+
+    lista_accesari.append(accesare)
+    print(accesare)
+
+    try:
+        album = Album.objects.get(id_album=id)
+    except Album.DoesNotExist:
+        return render(request, "albume/eroare.html", {
+            "mesaj": f"Albumul cu id-ul {id} nu exista."
+        }, status=404)
+
+    # K albume alese aleator din aceleasi categorii
+    iduri = Album.objects.filter(colectii__in=album.colectii.all()).values_list("id_album", flat=True)
+
+    din_categorie = Album.objects.filter(id_album__in=iduri).exclude(id_album=album.id_album)
+    din_categorie = din_categorie.order_by("?")[:settings.NR_PRODUSE_CATEGORIE]
+
+    return render(request, "albume/album.html", {
+        "album": album,
+        "din_categorie": din_categorie,
+        "stoc_min": settings.STOC_MIN
+    })

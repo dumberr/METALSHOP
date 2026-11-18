@@ -1,0 +1,11 @@
+{% extends "albume/baza.html" %}
+
+{% block title %}Eroare - Metalshop{% endblock %}
+
+{% block content %}
+    <h1>Eroare</h1>
+
+    <p class="eroare">{{ mesaj }}</p>
+
+    <p><a href="{% url 'produse' %}">Înapoi la produse</a></p>
+{% endblock %}

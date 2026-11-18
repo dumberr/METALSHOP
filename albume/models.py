@@ -2,6 +2,9 @@ from django.db import models
 
 from django.contrib.postgres.fields import ArrayField
 
+#lab4
+from django.urls import reverse
+
 class Trupa(models.Model):
     id_trupa = models.AutoField(primary_key=True)
 
@@ -156,6 +159,13 @@ class Album(models.Model):
         default=list,
         blank=True
     )
+    
+    #queryset
+    imagine = models.ImageField(
+        upload_to="albume/",
+        null=True,
+        blank=True
+    )
 
     trupa = models.ForeignKey(
         Trupa,
@@ -196,6 +206,10 @@ class Album(models.Model):
 
     def __str__(self):
         return self.nume_album
+    
+    #queryset
+    def get_absolute_url(self):
+        return reverse("detalii_album", args=[self.id_album])
     
 
 class Colectie(models.Model):
@@ -250,7 +264,9 @@ class Colectie(models.Model):
 
     albume = models.ManyToManyField(
         Album,
-        related_name="colectii"
+        related_name="colectii",
+        #queryset
+        blank=True
     )
 
     class Meta:

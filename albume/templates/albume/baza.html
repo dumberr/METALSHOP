@@ -7,6 +7,7 @@
     <title>{% block title %}Metalshop{% endblock %}</title>
 
     <link rel="stylesheet" href="{% static 'albume/css/nav.css' %}">
+    <link rel="stylesheet" href="{% static 'albume/css/produse.css' %}">
 </head>
 <body>
 
@@ -33,6 +34,15 @@
             <li><a href="{% url 'despre' %}">Despre</a></li>
             <li><a href="{% url 'istoric' %}">Istoric</a></li>
             <li><a href="{% url 'produse' %}">Produse</a></li>
+                        <li>
+                <a href="{% url 'produse' %}">Categorii</a>
+
+                <ul>
+                    {% for c in categorii_meniu %}
+                        <li><a href="{% url 'categorie' c.nume %}">{{ c.nume }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
             <li><a href="{% url 'contact' %}">Contact</a></li>
             <li><a href="{% url 'cos_virtual' %}">Coș virtual</a></li>
             <li><a href="{% url 'info' %}">Info</a></li>

@@ -169,3 +169,8 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'djangorares@gmail.com'
 EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
 DEFAULT_FROM_EMAIL = 'Da-Boss <djangorares@gmail.com>'
+
+#lab4
+STOC_MIN = 5              
+PROD_PER_PAG = 6          
+NR_PRODUSE_CATEGORIE = 3  

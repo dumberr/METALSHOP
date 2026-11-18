@@ -1,0 +1,121 @@
+{% extends "albume/baza.html" %}
+
+{% load static %}
+
+{% block title %}{% if categorie %}{{ categorie.nume }}{% else %}Produse{% endif %} - Metalshop{% endblock %}
+
+{% block content %}
+
+    {# 7, 10: detaliile categoriei apar doar pe pagina unei categorii #}
+    {% if categorie %}
+        <section class="antet-categorie" style="border-color: {{ categorie.culoare }};">
+            {% if categorie.sigla %}
+                <img src="{{ categorie.sigla.url }}" class="sigla-mare" alt="[sigla {{ categorie.nume }}]">
+            {% endif %}
+
+            <div>
+                <h1 style="color: {{ categorie.culoare }};">{{ categorie.nume }}</h1>
+                <p>{{ categorie.descriere | default:"Această categorie nu are încă o descriere." }}</p>
+                <p>
+                    Tematică: {{ categorie.tematica }} |
+                    Sezon: {{ categorie.get_sezon_display }} |
+                    Reducere: {{ categorie.procent_reducere }}%
+                </p>
+            </div>
+        </section>
+    {% else %}
+        <h1>Produse</h1>
+    {% endif %}
+
+    {% if eroare %}
+        <p class="eroare">{{ eroare }}</p>
+    {% endif %}
+
+    {# 3: linkuri de sortare; pastreaza tagurile active #}
+    <p class="sortare">
+        Sortează după:
+        {% for col, eticheta in coloane_sortare.items %}
+            <span class="optiune-sortare">
+                {{ eticheta }}
+                <a href="?{{ param_taguri }}sort=a&amp;coloana={{ col }}"
+                   {% if sort == "a" and coloana == col %}class="activ"{% endif %}>▲</a>
+                <a href="?{{ param_taguri }}sort=d&amp;coloana={{ col }}"
+                   {% if sort == "d" and coloana == col %}class="activ"{% endif %}>▼</a>
+            </span>
+        {% endfor %}
+    </p>
+
+    {# 5: tagurile active, fiecare cu un x care il elimina din filtrare #}
+    {% if butoane_taguri %}
+        <p class="taguri-active">
+            Taguri active:
+            {% for buton in butoane_taguri %}
+                <a href="{{ buton.link_eliminare }}" class="tag-activ">{{ buton.nume }} ✕</a>
+            {% endfor %}
+        </p>
+    {% endif %}
+
+    {# 6 #}
+    {% if pagina.object_list %}
+        <p>
+            Se afișează produsele între {{ pagina.start_index }} și {{ pagina.end_index }}
+            din totalul de {{ pagina.paginator.count }} produse.
+        </p>
+    {% else %}
+        <p>Nu există produse pentru afișare.</p>
+    {% endif %}
+
+    {% include "albume/paginare.html" %}
+
+    <section class="lista-produse">
+        {% for album in pagina.object_list %}
+            <article class="produs {% if album.stoc < stoc_min %}stoc-limitat{% endif %}">
+
+                {# 1: imaginea produsului sau imaginea implicita #}
+                {% if album.imagine %}
+                    <img src="{{ album.imagine.url }}" class="imag-produs" alt="[imagine {{ album.nume_album }}]">
+                {% else %}
+                    <img src="{% static 'albume/images/album-necunoscut.png' %}" class="imag-produs" alt="imagine indisponibilă">
+                {% endif %}
+
+                {# 2 #}
+                <h2><a href="{{ album.get_absolute_url }}">{{ album.nume_album }}</a></h2>
+
+                <p>{{ album.trupa }} ({{ album.an_lansare }})</p>
+                <p class="pret">{{ album.pret }} lei</p>
+
+                {# 4 #}
+                {% if album.stoc < stoc_min %}
+                    <p class="avertisment-stoc">Stoc limitat: {{ album.stoc }} buc.</p>
+                {% endif %}
+
+                {# 1, 9, 10: categoriile, cu culoarea si sigla lor, ca linkuri #}
+                <p>
+                    {% for c in album.colectii.all %}
+                        <a href="{% url 'categorie' c.nume %}" class="categorie"
+                           style="color: {{ c.culoare }}; border-color: {{ c.culoare }};">
+                            {% if c.sigla %}
+                                <img src="{{ c.sigla.url }}" class="sigla-mica" alt="">
+                            {% endif %}
+                            {{ c.nume }}
+                        </a>
+                    {% endfor %}
+                </p>
+
+                {# 4: fiecare tag adauga un parametru tag in URL #}
+                <p>
+                    {% for tag in album.taguri %}
+                        {% if tag in taguri_active %}
+                            <span class="tag tag-selectat">#{{ tag }}</span>
+                        {% else %}
+                            <a href="?{{ param_toti }}tag={{ tag | urlencode }}" class="tag">#{{ tag }}</a>
+                        {% endif %}
+                    {% endfor %}
+                </p>
+            </article>
+        {% endfor %}
+    </section>
+
+    {% include "albume/paginare.html" %}
+
+{% endblock %}

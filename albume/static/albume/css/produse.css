@@ -1,0 +1,171 @@
+/* Linkurile din paginile de produse */
+.produs h2 a,
+.paginare a {
+    color: #a9bdd0;
+}
+
+/* Lista de produse */
+.lista-produse {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.produs {
+    background-color: #292929;
+    border: 2px solid #444;
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.produs h2 {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.imag-produs {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.pret {
+    font-weight: bold;
+    color: #a9bdd0;
+}
+
+/* Produsele cu stoc limitat */
+.stoc-limitat {
+    border-color: #cc2e2e;
+}
+
+.avertisment-stoc {
+    color: #ff6b6b;
+    font-weight: bold;
+}
+
+/* Categoria: culoarea vine din baza de date, prin atributul style */
+.categorie {
+    display: inline-block;
+    padding: 2px 8px;
+    margin: 2px 0;
+    border: 1px solid;
+    border-radius: 4px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.sigla-mica {
+    height: 16px;
+    vertical-align: middle;
+}
+
+/* Tagurile */
+.tag {
+    margin-right: 6px;
+    color: #bbbbbb;
+}
+
+.tag-selectat {
+    color: white;
+    font-weight: bold;
+}
+
+.tag-activ {
+    display: inline-block;
+    padding: 4px 10px;
+    margin-right: 6px;
+    background-color: #8b0000;
+    color: white;
+    border-radius: 12px;
+    text-decoration: none;
+}
+
+/* Sortare si paginare */
+.optiune-sortare {
+    margin-right: 15px;
+}
+
+.optiune-sortare a {
+    text-decoration: none;
+    color: #bbbbbb;
+}
+
+.optiune-sortare a.activ {
+    color: #ff6b6b;
+}
+
+.paginare {
+    text-align: center;
+}
+
+.paginare a,
+.paginare span {
+    margin: 0 10px;
+}
+
+.eroare {
+    background-color: #cc2e2e;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+/* Antetul paginii unei categorii */
+.antet-categorie {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 15px;
+    border-left: 8px solid;
+    background-color: #292929;
+}
+
+.sigla-mare {
+    height: 90px;
+}
+
+/* Pagina unui produs */
+.detalii-produs {
+    display: flex;
+    gap: 30px;
+    padding: 20px;
+    background-color: #292929;
+    border: 2px solid #444;
+    border-radius: 8px;
+}
+
+.detalii-produs.stoc-limitat {
+    border-color: #cc2e2e;
+}
+
+.imag-detalii {
+    width: 320px;
+    height: 320px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.produs-mic {
+    display: block;
+    color: white;
+    text-decoration: none;
+}
+
+.produs-mic h3 {
+    font-size: 16px;
+    margin: 10px 0 5px 0;
+}
+
+@media (max-width: 600px) {
+    .detalii-produs,
+    .antet-categorie {
+        flex-direction: column;
+    }
+
+    .imag-detalii {
+        width: 100%;
+        height: auto;
+    }
+}

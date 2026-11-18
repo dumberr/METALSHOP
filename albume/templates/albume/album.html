@@ -1,0 +1,101 @@
+{% extends "albume/baza.html" %}
+
+{% load static %}
+
+{% block title %}{{ album.nume_album }} - Metalshop{% endblock %}
+
+{% block content %}
+
+    <section class="detalii-produs {% if album.stoc < stoc_min %}stoc-limitat{% endif %}">
+
+        {% if album.imagine %}
+            <img src="{{ album.imagine.url }}" class="imag-detalii" alt="[imagine {{ album.nume_album }}]">
+        {% else %}
+            <img src="{% static 'albume/images/album-necunoscut.png' %}" class="imag-detalii" alt="imagine indisponibilă">
+        {% endif %}
+
+        <div>
+            <h1>{{ album.nume_album }}</h1>
+
+            <p>Trupă: {{ album.trupa }}{% if album.trupa.tara %} ({{ album.trupa.tara }}){% endif %}</p>
+            <p>Casă de discuri: {{ album.casa_discuri }}</p>
+            <p>An lansare: {{ album.an_lansare }}</p>
+            <p class="pret">Preț: {{ album.pret }} lei</p>
+
+            <p>
+                Stoc: {{ album.stoc }} buc.
+                {% if album.stoc < stoc_min %}
+                    <span class="avertisment-stoc">Stoc limitat</span>
+                {% endif %}
+            </p>
+
+            <p>Adăugat pe site: {{ album.data_adaug | date:"d.m.Y" }}</p>
+
+            <p>
+                Genuri:
+                {% for gen in album.genuri.all %}
+                    {{ gen.nume_gen }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+
+            <p>
+                Categorii:
+                {% for c in album.colectii.all %}
+                    <a href="{% url 'categorie' c.nume %}" class="categorie"
+                       style="color: {{ c.culoare }}; border-color: {{ c.culoare }};">
+                        {% if c.sigla %}
+                            <img src="{{ c.sigla.url }}" class="sigla-mica" alt="">
+                        {% endif %}
+                        {{ c.nume }}
+                    </a>
+                {% endfor %}
+            </p>
+
+            {# 4: tagul duce la pagina de produse filtrata dupa el #}
+            <p>
+                Taguri:
+                {% for tag in album.taguri %}
+                    <a href="{% url 'produse' %}?tag={{ tag | urlencode }}" class="tag">#{{ tag }}</a>
+                {% endfor %}
+            </p>
+        </div>
+    </section>
+
+    {% if album.piese.all %}
+        <section>
+            <h2>Piese</h2>
+            <ol>
+                {% for piesa in album.piese.all %}
+                    <li value="{{ piesa.nr_piesa }}">
+                        {{ piesa.titlu_piesa }} ({{ piesa.durata_secunde }} secunde){% if piesa.este_bonus %} - bonus{% endif %}
+                    </li>
+                {% endfor %}
+            </ol>
+        </section>
+    {% endif %}
+
+    {# 2 #}
+    <section>
+        <h2>Produse din aceeași categorie</h2>
+
+        {% if din_categorie %}
+            <div class="lista-produse">
+                {% for alt in din_categorie %}
+                    <a href="{{ alt.get_absolute_url }}" class="produs produs-mic">
+                        {% if alt.imagine %}
+                            <img src="{{ alt.imagine.url }}" class="imag-produs" alt="[imagine {{ alt.nume_album }}]">
+                        {% else %}
+                            <img src="{% static 'albume/images/album-necunoscut.png' %}" class="imag-produs" alt="imagine indisponibilă">
+                        {% endif %}
+
+                        <h3>{{ alt.nume_album }}</h3>
+                        <p class="pret">{{ alt.pret }} lei</p>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Nu există alte produse în aceeași categorie.</p>
+        {% endif %}
+    </section>
+
+{% endblock %}
